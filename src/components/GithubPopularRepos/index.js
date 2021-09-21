@@ -1,7 +1,7 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import LanguageFilterItem from '../LanguageFilterItem'
-// import RepositoryItem from '../RepositoryItem'
+import RepositoryItem from '../RepositoryItem'
 
 import './index.css'
 
@@ -31,22 +31,21 @@ class GithubPopularRepos extends Component {
   }
 
   updateTabId = id => {
-    this.setState({activeTab: id})
+    this.setState({activeTab: id}, this.getLanguages)
   }
 
   getLanguages = async () => {
     const {activeTab} = this.state
-    console.log(activeTab)
+
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const api = `https://apis.ccbp.in/popular-repos?language=${activeTab}`
-    console.log(api)
 
     const options = {
       method: 'GET',
     }
     const response = await fetch(api, options)
     const fetchedData = await response.json()
-    console.log(response)
+
     if (response.ok === true) {
       this.setState({apiStatus: apiStatusConstants.success})
       const updatedData = fetchedData.popular_repos.map(eachDetail => ({
@@ -57,7 +56,7 @@ class GithubPopularRepos extends Component {
         forksCount: eachDetail.forks_count,
         issuesCount: eachDetail.issues_count,
       }))
-      this.setState({data: fetchedData})
+      this.setState({data: updatedData})
       console.log(updatedData)
     } else {
       this.setState({apiStatus: apiStatusConstants.failure})
@@ -80,9 +79,14 @@ class GithubPopularRepos extends Component {
 
   renderDataSuccessView = () => {
     const {data} = this.state
-    console.log(data)
 
-    return <ul>{/* <RepositoryItem /> */}</ul>
+    return (
+      <ul className="items-container">
+        {data.map(each => (
+          <RepositoryItem eachItem={each} key={each.id} />
+        ))}
+      </ul>
+    )
   }
 
   renderDataFailureView = () => (
@@ -102,19 +106,21 @@ class GithubPopularRepos extends Component {
   render() {
     const {activeTab} = this.state
     return (
-      <div>
-        <h1>Popular</h1>
-        <ul>
-          <p>{activeTab}</p>
-          {languageFiltersData.map(eachFilter => (
-            <LanguageFilterItem
-              languageTabItem={eachFilter}
-              key={eachFilter.id}
-              updateTabId={this.updateTabId}
-            />
-          ))}
-        </ul>
-        <div>{this.renderData()}</div>
+      <div className="app-container">
+        <div className="container">
+          <h1 className="top-title">Popular</h1>
+          <ul className="language-filters">
+            {languageFiltersData.map(eachFilter => (
+              <LanguageFilterItem
+                languageTabItem={eachFilter}
+                key={eachFilter.id}
+                updateTabId={this.updateTabId}
+                isActive={activeTab === eachFilter.id}
+              />
+            ))}
+          </ul>
+          <div>{this.renderData()}</div>
+        </div>
       </div>
     )
   }

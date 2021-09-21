@@ -1,9 +1,18 @@
 /* Write your CSS here */
-ul {
-  text-decoration: none;
-  list-style: none;
-  display: flex;
-}
+
 li {
+  list-style: none;
   margin-right: 10px;
+}
+button {
+  background-color: transparent;
+  border: 0px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.active-tab-btn {
+  color: #0284c7;
+  border: 1px solid #0284c7;
+  border-radius: 10px;
+  padding: 5px 10px;
 }

@@ -3,3 +3,29 @@
   text-align: center;
   height: 500px;
 }
+.items-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+}
+.app-container {
+  display: flex;
+  justify-content: center;
+}
+.container {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.top-title {
+  font-family: 'Lobster';
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+.language-filters {
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
